@@ -1,61 +1,68 @@
-'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@nxnext/ui/avatar';
 import { Badge } from '@nxnext/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@nxnext/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@nxnext/ui/card';
 import Link from 'next/link';
 
 import { Github, Globe, Twitter } from 'lucide-react';
 
-export default function ProfileCard() {
+import { Props } from '../types';
+
+export default async function ProfileCard({ railwayProfile, allLanguages, githubProfile }: Props) {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80"
-            alt="Profile"
-          />
-          <AvatarFallback>JD</AvatarFallback>
+          <AvatarImage src={railwayProfile.avatar} alt="Profile" />
+          <AvatarFallback>
+            {railwayProfile.name
+              .split(' ')
+              .map((name: string) => name[0])
+              .join('')}
+          </AvatarFallback>
         </Avatar>
         <div>
-          <CardTitle>John Doe</CardTitle>
-          <CardDescription>Full Stack Developer & DevOps Engineer</CardDescription>
+          <CardTitle>{railwayProfile.name}</CardTitle>
+          {/*<CardDescription></CardDescription>*/}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-muted-foreground">
-          Passionate about creating scalable infrastructure solutions and sharing knowledge with the
-          developer community. Specialized in Railway deployments and cloud architecture.
+          {railwayProfile.profile.bio || githubProfile?.bio || 'No bio provided'}
         </p>
 
         <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary">Docker</Badge>
-          <Badge variant="secondary">Kubernetes</Badge>
-          <Badge variant="secondary">Node.js</Badge>
-          <Badge variant="secondary">PostgreSQL</Badge>
-          <Badge variant="secondary">Railway</Badge>
+          {allLanguages.map((language: string) => (
+            <Badge variant="secondary" key={language}>
+              {language}
+            </Badge>
+          ))}
         </div>
 
         <div className="flex gap-4 pt-2">
-          <Link
-            href="https://github.com"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Github className="h-5 w-5" />
-          </Link>
-          <Link
-            href="https://twitter.com"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Twitter className="h-5 w-5" />
-          </Link>
-          <Link
-            href="https://example.com"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Globe className="h-5 w-5" />
-          </Link>
+          {githubProfile?.html_url && (
+            <Link
+              href={githubProfile.html_url}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Github className="h-5 w-5" />
+            </Link>
+          )}
+          {githubProfile && githubProfile.twitter_username && (
+            <Link
+              href={`https://x.com/${githubProfile.twitter_username}`}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Twitter className="h-5 w-5" />
+            </Link>
+          )}
+          {railwayProfile.profile.website && (
+            <Link
+              href={railwayProfile.profile.website}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Globe className="h-5 w-5" />
+            </Link>
+          )}
         </div>
       </CardContent>
     </Card>

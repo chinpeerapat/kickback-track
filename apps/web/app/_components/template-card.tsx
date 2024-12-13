@@ -1,5 +1,4 @@
-'use client';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@nxnext/ui/avatar';
 import { Button } from '@nxnext/ui/button';
 import {
   Card,
@@ -9,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@nxnext/ui/card';
-import Image from 'next/image';
+import Link from 'next/link';
 
 import { Download } from 'lucide-react';
 
@@ -19,6 +18,8 @@ interface TemplateCardProps {
   downloads: number;
   price: number;
   image: string;
+  code: string;
+  referralCode: string;
 }
 
 export default function TemplateCard({
@@ -27,15 +28,20 @@ export default function TemplateCard({
   downloads,
   price,
   image,
+  code,
+  referralCode,
 }: TemplateCardProps) {
   return (
     <Card className="overflow-hidden">
-      <div className="relative h-48 w-full">
-        <Image src={image} alt={title} fill className="object-cover" />
-      </div>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+      <CardHeader className="flex flex-row items-center gap-4">
+        <Avatar className="h-16 w-16">
+          <AvatarImage src={image} alt={title} />
+          <AvatarFallback>{title[0]}</AvatarFallback>
+        </Avatar>
+        <div>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
@@ -47,7 +53,14 @@ export default function TemplateCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">View Template</Button>
+        <Button className="w-full" asChild>
+          <Link
+            href={`https://railway.app/template/${code}?referralCode=${referralCode}`}
+            target="_blank"
+          >
+            View Template
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

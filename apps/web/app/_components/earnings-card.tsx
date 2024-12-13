@@ -2,9 +2,18 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@nxnext/ui/card';
 
-import { DollarSign, TrendingUp, Users } from 'lucide-react';
+import { DollarSign, Download, TrendingUp } from 'lucide-react';
 
-export default function EarningsCard() {
+import { Props } from '../types';
+
+export default function EarningsCard({ userTemplates }: Props) {
+  const totalEarnings = userTemplates.reduce((acc, template) => acc + template.totalPayout, 0);
+  const totalProjects = userTemplates.reduce((acc, template) => acc + template.projects, 0);
+  const totalActiveProjects = userTemplates.reduce(
+    (acc, template) => acc + template.activeProjects,
+    0,
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -19,17 +28,19 @@ export default function EarningsCard() {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Revenue</p>
-              <h3 className="text-2xl font-bold">$12,345</h3>
+              <h3 className="text-2xl font-bold">
+                {totalEarnings.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+              </h3>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
             <div className="p-2 bg-primary/10 rounded-full">
-              <Users className="h-6 w-6 text-primary" />
+              <Download className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Users</p>
-              <h3 className="text-2xl font-bold">2,891</h3>
+              <p className="text-sm font-medium text-muted-foreground">Total Downloads</p>
+              <h3 className="text-2xl font-bold">{totalProjects.toLocaleString()}</h3>
             </div>
           </div>
 
@@ -38,8 +49,8 @@ export default function EarningsCard() {
               <TrendingUp className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Growth</p>
-              <h3 className="text-2xl font-bold">+24.5%</h3>
+              <p className="text-sm font-medium text-muted-foreground">Active Projects</p>
+              <h3 className="text-2xl font-bold">{totalActiveProjects.toLocaleString()}</h3>
             </div>
           </div>
         </div>
