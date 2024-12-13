@@ -1,7 +1,9 @@
 FROM node:20 AS builder
 
 ARG RAILWAY_TOKEN
-ENV NEXT_OUTPUT=standalone
+ARG CLOUDFLARE_ANALYTICS_TOKEN
+ENV NEXT_OUTPUT=standalone\
+    NODE_ENV=production
 
 WORKDIR /app
 COPY . .
