@@ -93,8 +93,6 @@ export async function getData(): Promise<Props> {
     }),
   }).then((res) => res.json());
 
-  console.log(data.userTemplates.edges.at(0).node);
-
   const railwayProfile = data.userProfile as RailwayProfile;
   const githubProfile = data.me.providerAuths.edges.find(
     (edge: any) => edge.node.provider === 'github',
