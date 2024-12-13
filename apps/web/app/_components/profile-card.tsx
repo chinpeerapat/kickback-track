@@ -43,6 +43,7 @@ export default async function ProfileCard({ railwayProfile, allLanguages, github
             <Link
               href={githubProfile.html_url}
               className="text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
             >
               <Github className="h-5 w-5" />
             </Link>
@@ -51,6 +52,7 @@ export default async function ProfileCard({ railwayProfile, allLanguages, github
             <Link
               href={`https://x.com/${githubProfile.twitter_username}`}
               className="text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
             >
               <Twitter className="h-5 w-5" />
             </Link>
@@ -59,6 +61,7 @@ export default async function ProfileCard({ railwayProfile, allLanguages, github
             <Link
               href={railwayProfile.profile.website}
               className="text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
             >
               <Globe className="h-5 w-5" />
             </Link>

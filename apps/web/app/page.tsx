@@ -23,7 +23,10 @@ export default async function Home() {
                 description={template.description}
                 downloads={template.projects}
                 price={template.totalPayout}
-                image={template.image}
+                image={
+                  template.image ??
+                  `https://devicons.railway.app/${encodeURIComponent(template.name)}?variant=light`
+                }
                 code={template.code}
                 referralCode={data.referralCode}
               />

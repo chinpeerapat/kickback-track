@@ -10,7 +10,7 @@ import {
 } from '@nxnext/ui/card';
 import Link from 'next/link';
 
-import { Download } from 'lucide-react';
+import { Download, ExternalLink } from 'lucide-react';
 
 interface TemplateCardProps {
   title: string;
@@ -32,9 +32,9 @@ export default function TemplateCard({
   referralCode,
 }: TemplateCardProps) {
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="flex flex-row items-center gap-4">
-        <Avatar className="h-16 w-16">
+    <Card className="overflow-hidden flex flex-col">
+      <CardHeader className="flex flex-row items-start gap-4">
+        <Avatar className="h-16 w-16 mt-1.5">
           <AvatarImage src={image} alt={title} />
           <AvatarFallback>{title[0]}</AvatarFallback>
         </Avatar>
@@ -52,13 +52,14 @@ export default function TemplateCard({
           <span className="text-lg font-bold">${price}</span>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full" asChild>
+      <div className="flex-1" />
+      <CardFooter className="flex justify-end">
+        <Button className="" asChild variant="outline">
           <Link
             href={`https://railway.app/template/${code}?referralCode=${referralCode}`}
             target="_blank"
           >
-            View Template
+            View Template <ExternalLink />
           </Link>
         </Button>
       </CardFooter>
