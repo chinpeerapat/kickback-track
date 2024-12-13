@@ -1,5 +1,6 @@
 FROM node:20 AS builder
 
+ARG RAILWAY_TOKEN
 ENV NEXT_OUTPUT=standalone
 
 WORKDIR /app
