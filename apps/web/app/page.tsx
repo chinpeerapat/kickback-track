@@ -1,9 +1,49 @@
+import { Metadata, Viewport } from 'next';
+
 import EarningsCard from './_components/earnings-card';
 import ProfileCard from './_components/profile-card';
 import TemplateCard from './_components/template-card';
 import { getCachedData } from './data';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getCachedData();
+
+  return {
+    title: `${data.railwayProfile.name} | Railway Kickback`,
+    description: `Check out ${data.railwayProfile.name}'s templates on Railway`,
+    authors: {
+      name: 'Igor Katsuba',
+      url: 'https://github.com/IKatsuba',
+    },
+    creator: 'Igor Katsuba',
+    keywords: ['railway', 'templates', 'kickback', 'earnings', data.railwayProfile.name],
+    alternates: {
+      canonical: 'https://railway.katsuba.dev',
+    },
+    openGraph: {
+      title: `${data.railwayProfile.name} | Railway Kickback`,
+      description: `Check out ${data.railwayProfile.name}'s templates on Railway`,
+      url: `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`,
+      siteName: 'Railway Kickback',
+      type: 'website',
+      ttl: 60 * 60 * 24,
+      // images: [
+      //   {
+      //     url: `og`,
+      //     width: 1200,
+      //     height: 630,
+      //     alt: `${data.railwayProfile.name} | Railway Kickback`,
+      //   },
+      // ],
+    },
+  };
+}
+
+export const viewport: Viewport = {
+  colorScheme: 'dark',
+};
 
 export default async function Home() {
   const data = await getCachedData();
