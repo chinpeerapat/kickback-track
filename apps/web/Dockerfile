@@ -2,13 +2,14 @@ FROM node:20 AS builder
 
 ARG RAILWAY_TOKEN
 ARG CLOUDFLARE_ANALYTICS_TOKEN
-ENV NEXT_OUTPUT=standalone\
-    NODE_ENV=production
+ENV NEXT_OUTPUT=standalone
 
 WORKDIR /app
 COPY . .
 
 RUN npm ci
+
+ENV NODE_ENV=production
 RUN npx nx build web -c=production
 
 FROM node:20-alpine AS runner
