@@ -15,8 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nxnext/auth": ["libs/auth/src/index.ts"],
-      "@nxnext/auth/server": ["libs/auth/src/server.ts"],
       "@nxnext/ui": ["libs/ui/src/index.ts"],
       "@nxnext/ui/*": ["libs/ui/src/lib/*"],
       "@nxnext/ui/server": ["libs/ui/src/server.ts"],
