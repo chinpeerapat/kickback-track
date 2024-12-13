@@ -1,10 +1,12 @@
 import EarningsCard from './_components/earnings-card';
 import ProfileCard from './_components/profile-card';
 import TemplateCard from './_components/template-card';
-import { getData } from './data';
+import { getCachedData } from './data';
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const data = await getData();
+  const data = await getCachedData();
 
   return (
     <main className="min-h-screen bg-background p-8">

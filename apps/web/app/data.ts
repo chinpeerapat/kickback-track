@@ -1,3 +1,5 @@
+import { unstable_cache as cache } from 'next/cache';
+
 import process from 'node:process';
 
 import { GithubProfile, Props, RailwayProfile, UserTemplate } from './types';
@@ -21,7 +23,7 @@ async function getUsername() {
   return data.me.username;
 }
 
-export async function getData(): Promise<Props> {
+async function getData(): Promise<Props> {
   const username = await getUsername();
 
   const { data } = await fetch(`https://backboard.railway.com/graphql/v2`, {
@@ -118,3 +120,7 @@ export async function getData(): Promise<Props> {
     referralCode: data.referralInfo.code,
   };
 }
+
+export const getCachedData = cache(getData, ['data'], {
+  revalidate: 60 * 5, // 5 minutes
+});
