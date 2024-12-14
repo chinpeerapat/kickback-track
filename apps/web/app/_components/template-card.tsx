@@ -34,7 +34,7 @@ export default function TemplateCard({
   return (
     <Card className="overflow-hidden flex flex-col">
       <CardHeader className="flex flex-row items-start gap-4">
-        <Avatar className="h-16 w-16 mt-1.5">
+        <Avatar className="h-10 w-10 mt-1.5">
           <AvatarImage src={image} alt={title} />
           <AvatarFallback>{title[0]}</AvatarFallback>
         </Avatar>
@@ -54,12 +54,12 @@ export default function TemplateCard({
       </CardContent>
       <div className="flex-1" />
       <CardFooter className="flex justify-end">
-        <Button className="" asChild variant="outline">
+        <Button asChild variant="outline" size="sm">
           <Link
             href={`https://railway.app/template/${code}?referralCode=${referralCode}`}
             target="_blank"
           >
-            View Template <ExternalLink />
+            Deploy <ExternalLink />
           </Link>
         </Button>
       </CardFooter>
