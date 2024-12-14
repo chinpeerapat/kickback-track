@@ -1,6 +1,6 @@
 # Next.js with Auth.js
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/DI0Aax?referralCode=73cYCO)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.app/template/Wjoi4m?referralCode=73cYCO)
 
 A Next.js starter project set up with Auth.js for user authentication and protected routes. The
 project includes:
