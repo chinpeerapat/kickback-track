@@ -3,6 +3,8 @@ import './global.css';
 import { cn } from '@nxnext/utils';
 import { Inter as FontSans } from 'next/font/google';
 
+import { env } from './_env';
+
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -16,11 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         {children}
 
-        {process.env.NODE_ENV === 'production' && process.env.CLOUDFLARE_ANALYTICS_TOKEN && (
+        {env.NODE_ENV === 'production' && env.CLOUDFLARE_ANALYTICS_TOKEN && (
           <script
             defer
             src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={`{"token": "${process.env.CLOUDFLARE_ANALYTICS_TOKEN}"}`}
+            data-cf-beacon={`{"token": "${env.CLOUDFLARE_ANALYTICS_TOKEN}"}`}
           ></script>
         )}
       </body>

@@ -1,14 +1,13 @@
 import { unstable_cache as cache } from 'next/cache';
 
-import process from 'node:process';
-
+import { env } from './_env';
 import { GithubProfile, Props, RailwayProfile, UserTemplate } from './types';
 
 async function getUsername() {
-  const { data } = await fetch(`https://backboard.railway.com/graphql/v2`, {
+  const response = await fetch(`https://backboard.railway.com/graphql/v2`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.RAILWAY_TOKEN}`,
+      Authorization: `Bearer ${env.RAILWAY_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -18,7 +17,19 @@ async function getUsername() {
   }
 }`,
     }),
-  }).then((res) => res.json());
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to get username: ${response.status} ${response.statusText}. Please check your Railway token.`,
+    );
+  }
+
+  const { data, errors } = await response.json();
+
+  if (errors && errors.length) {
+    throw new Error(`Failed to get username: ${errors[0].message}`);
+  }
 
   return data.me.username;
 }
@@ -26,10 +37,10 @@ async function getUsername() {
 async function getData(): Promise<Props> {
   const username = await getUsername();
 
-  const { data } = await fetch(`https://backboard.railway.com/graphql/v2`, {
+  const response = await fetch(`https://backboard.railway.com/graphql/v2`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.RAILWAY_TOKEN}`,
+      Authorization: `Bearer ${env.RAILWAY_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -93,7 +104,19 @@ async function getData(): Promise<Props> {
   }
 }`,
     }),
-  }).then((res) => res.json());
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to get data: ${response.status} ${response.statusText}. Please check your Railway token.`,
+    );
+  }
+
+  const { data, errors } = await response.json();
+
+  if (errors && errors.length) {
+    throw new Error(`Failed to get data: ${errors[0].message}`);
+  }
 
   const railwayProfile = data.userProfile as RailwayProfile;
   const githubProfile = data.me.providerAuths.edges.find(

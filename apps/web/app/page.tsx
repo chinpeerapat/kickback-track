@@ -3,6 +3,7 @@ import { Metadata, Viewport } from 'next';
 import EarningsCard from './_components/earnings-card';
 import ProfileCard from './_components/profile-card';
 import TemplateCard from './_components/template-card';
+import { env } from './_env';
 import { getCachedData } from './data';
 
 export const dynamic = 'force-dynamic';
@@ -25,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: `${data.railwayProfile.name} | Railway Kickback`,
       description: `Check out ${data.railwayProfile.name}'s templates on Railway`,
-      url: `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`,
+      url: `https://${env.RAILWAY_PUBLIC_DOMAIN}`,
       siteName: 'Railway Kickback',
       type: 'website',
       ttl: 60 * 60 * 24,
