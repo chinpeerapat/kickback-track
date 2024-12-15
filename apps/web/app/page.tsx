@@ -71,6 +71,7 @@ export default async function Home() {
                 }
                 code={template.code}
                 referralCode={data.referralCode}
+                activeProjects={template.activeProjects}
               />
             ))}
           </div>

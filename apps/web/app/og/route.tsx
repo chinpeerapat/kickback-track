@@ -44,7 +44,7 @@ export async function GET() {
                 currency: 'USD',
               })}
             </span>
-            Total Downloads:{' '}
+            Total Deploys:{' '}
             <span tw="text-blue-700 text-5xl">{totalDownloads.toLocaleString('en-US')}</span>
           </div>
         </div>

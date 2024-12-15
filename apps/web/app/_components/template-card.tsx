@@ -20,6 +20,7 @@ interface TemplateCardProps {
   image: string;
   code: string;
   referralCode: string;
+  activeProjects: number;
 }
 
 export default function TemplateCard({
@@ -30,6 +31,7 @@ export default function TemplateCard({
   image,
   code,
   referralCode,
+  activeProjects,
 }: TemplateCardProps) {
   return (
     <Card className="overflow-hidden flex flex-col">
@@ -45,9 +47,13 @@ export default function TemplateCard({
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <Download className="h-4 w-4" />
-            <span>{downloads} downloads</span>
+          <div className="flex items-start space-x-2 text-sm text-muted-foreground">
+            <Download className="h-4 w-4 mt-0.5" />
+            <div>
+              <span>{downloads} deploys</span>
+              <br />
+              <span>{activeProjects} active</span>
+            </div>
           </div>
           <span className="text-lg font-bold">${price}</span>
         </div>

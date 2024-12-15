@@ -39,7 +39,7 @@ export default function EarningsCard({ userTemplates }: Props) {
               <Download className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Downloads</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Deploys</p>
               <h3 className="text-2xl font-bold">{totalProjects.toLocaleString()}</h3>
             </div>
           </div>
