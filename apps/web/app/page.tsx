@@ -51,8 +51,8 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <div className="grid gap-6 md:grid-cols-[1fr,2fr]">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="grid gap-6 md:grid-cols-3">
           <ProfileCard {...data} />
           <EarningsCard {...data} />
         </div>
