@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const data = await getCachedData();
 
-  const totalEarnings = data.userTemplates.reduce((acc, template) => acc + template.totalPayout, 0);
-  const totalDownloads = data.userTemplates.reduce((acc, template) => acc + template.projects, 0);
+  const totalEarnings = data.templates.reduce((acc, template) => acc + template.totalPayout, 0);
+  const totalDownloads = data.templates.reduce((acc, template) => acc + template.projects, 0);
 
   return new ImageResponse(
     (
