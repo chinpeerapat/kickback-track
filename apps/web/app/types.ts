@@ -49,7 +49,7 @@ export type GithubProfile = {
   received_events_url: string;
 };
 
-export type UserTemplate = {
+export type TeamTemplate = {
   id: string;
   activeProjects: number;
   guides: {
@@ -63,7 +63,6 @@ export type UserTemplate = {
   status: string;
   tags: string[];
   totalPayout: number;
-  userId: string;
   category: string;
   code: string;
   communityThreadSlug: string;
@@ -72,12 +71,12 @@ export type UserTemplate = {
   health: number;
   image: string;
   createdAt: string;
+  referralCode: string;
 };
 
 export type Props = {
   railwayProfile: RailwayProfile;
   githubProfile: GithubProfile | null;
-  userTemplates: UserTemplate[];
+  templates: TeamTemplate[];
   allLanguages: string[];
-  referralCode: string;
 };

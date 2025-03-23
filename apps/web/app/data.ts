@@ -1,9 +1,9 @@
 import { unstable_cache as cache } from 'next/cache';
 
 import { env } from './_env';
-import { GithubProfile, Props, RailwayProfile, UserTemplate } from './types';
+import { GithubProfile, Props, RailwayProfile, TeamTemplate } from './types';
 
-async function getUsername() {
+async function getUsernameAndWorkspaces() {
   const response = await fetch(`https://backboard.railway.com/graphql/v2`, {
     method: 'POST',
     headers: {
@@ -14,6 +14,9 @@ async function getUsername() {
       query: `query MyQuery {
   me {
     username
+    workspaces {
+      id
+    }
   }
 }`,
     }),
@@ -31,12 +34,13 @@ async function getUsername() {
     throw new Error(`Failed to get username: ${errors[0].message}`);
   }
 
-  return data.me.username;
+  return {
+    username: data.me.username,
+    workspaces: (data.me.workspaces as { id: string }[]).map((workspace) => workspace.id),
+  };
 }
 
-async function getData(): Promise<Props> {
-  const username = await getUsername();
-
+async function getUserProfile(username: string) {
   const response = await fetch(`https://backboard.railway.com/graphql/v2`, {
     method: 'POST',
     headers: {
@@ -67,7 +71,43 @@ async function getData(): Promise<Props> {
       }
     }
   }
-  userTemplates(last: 100) {
+}`,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to get user profile: ${response.status} ${response.statusText}. Please check your Railway token.`,
+    );
+  }
+
+  const { data, errors } = await response.json();
+
+  if (errors && errors.length) {
+    throw new Error(`Failed to get data: ${errors[0].message}`);
+  }
+
+  const railwayProfile = data.userProfile as RailwayProfile;
+  const githubProfile = data.me.providerAuths.edges.find(
+    (edge: any) => edge.node.provider === 'github',
+  )?.node?.metadata as GithubProfile | null;
+
+  return {
+    railwayProfile,
+    githubProfile,
+  };
+}
+
+async function getTeamTemplates(workspace: string): Promise<TeamTemplate[]> {
+  const response = await fetch(`https://backboard.railway.com/graphql/v2`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RAILWAY_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `query MyQuery {
+  teamTemplates(teamId: "${workspace}") {
     edges {
       node {
         id
@@ -83,7 +123,6 @@ async function getData(): Promise<Props> {
         status
         tags
         totalPayout
-        userId
         category
         code
         communityThreadSlug
@@ -94,12 +133,8 @@ async function getData(): Promise<Props> {
         createdAt
       }
     }
-    pageInfo {
-      endCursor
-      startCursor
-    }
   }
-  referralInfo {
+  referralInfo(workspaceId: "${workspace}") {
     code
   }
 }`,
@@ -108,7 +143,7 @@ async function getData(): Promise<Props> {
 
   if (!response.ok) {
     throw new Error(
-      `Failed to get data: ${response.status} ${response.statusText}. Please check your Railway token.`,
+      `Failed to get team templates: ${response.status} ${response.statusText}. Please check your Railway token.`,
     );
   }
 
@@ -118,29 +153,38 @@ async function getData(): Promise<Props> {
     throw new Error(`Failed to get data: ${errors[0].message}`);
   }
 
-  const railwayProfile = data.userProfile as RailwayProfile;
-  const githubProfile = data.me.providerAuths.edges.find(
-    (edge: any) => edge.node.provider === 'github',
-  )?.node?.metadata as GithubProfile | null;
+  return data.teamTemplates.edges
+    .map((edge: any) => edge.node as TeamTemplate)
+    .filter((template: TeamTemplate) => template.status === 'PUBLISHED')
+    .map((template: TeamTemplate) => ({
+      ...template,
+      referralCode: data.referralInfo.code,
+    }));
+}
 
-  const userTemplates = data.userTemplates.edges
-    .map((edge: any) => edge.node as UserTemplate)
-    .filter((template: UserTemplate) => template.status === 'PUBLISHED') as UserTemplate[];
+async function getData(): Promise<Props> {
+  const { username, workspaces } = await getUsernameAndWorkspaces();
+
+  const [userProfile, ...teamTemplates] = await Promise.all([
+    getUserProfile(username),
+    ...workspaces.map((workspace) => getTeamTemplates(workspace)),
+  ]);
+
+  const templates = teamTemplates.flat();
 
   const allLanguages = [
     ...new Set(
-      userTemplates.reduce((acc: string[], template: UserTemplate) => {
+      templates.reduce((acc: string[], template: TeamTemplate) => {
         return [...acc, ...template.languages];
       }, []),
     ),
   ] as string[];
 
   return {
-    railwayProfile,
-    githubProfile,
-    userTemplates: userTemplates.sort((a, b) => b.totalPayout - a.totalPayout),
+    railwayProfile: userProfile.railwayProfile,
+    githubProfile: userProfile.githubProfile,
+    templates: templates.sort((a, b) => b.totalPayout - a.totalPayout),
     allLanguages,
-    referralCode: data.referralInfo.code,
   };
 }
 

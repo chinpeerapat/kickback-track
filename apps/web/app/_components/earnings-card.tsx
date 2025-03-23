@@ -6,13 +6,10 @@ import { DollarSign, Download, TrendingUp } from 'lucide-react';
 
 import { Props } from '../types';
 
-export default function EarningsCard({ userTemplates }: Props) {
-  const totalEarnings = userTemplates.reduce((acc, template) => acc + template.totalPayout, 0);
-  const totalProjects = userTemplates.reduce((acc, template) => acc + template.projects, 0);
-  const totalActiveProjects = userTemplates.reduce(
-    (acc, template) => acc + template.activeProjects,
-    0,
-  );
+export default function EarningsCard({ templates }: Props) {
+  const totalEarnings = templates.reduce((acc, template) => acc + template.totalPayout, 0);
+  const totalProjects = templates.reduce((acc, template) => acc + template.projects, 0);
+  const totalActiveProjects = templates.reduce((acc, template) => acc + template.activeProjects, 0);
 
   return (
     <Card className="md:col-span-2">

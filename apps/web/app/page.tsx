@@ -1,4 +1,14 @@
+import { Button } from '@nxnext/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@nxnext/ui/card';
 import { Metadata, Viewport } from 'next';
+import Link from 'next/link';
 
 import EarningsCard from './_components/earnings-card';
 import ProfileCard from './_components/profile-card';
@@ -47,7 +57,42 @@ export const viewport: Viewport = {
 };
 
 export default async function Home() {
-  const data = await getCachedData();
+  const data = await getCachedData().catch(() => null);
+
+  if (!data) {
+    return (
+      <main className="min-h-screen bg-background p-8 flex justify-center items-center">
+        <Card className="overflow-hidden flex flex-col max-w-96 text-destructive">
+          <CardHeader className="flex flex-row items-start gap-4 ">
+            <div>
+              <CardTitle>Error loading data</CardTitle>
+              <CardDescription>
+                Please check your Railway token and Team ID in app environment variables.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className=" space-x-2 text-sm text-muted-foreground">
+                If you don&apos;t have a Railway token, you can get one{' '}
+                <Link href="https://railway.com/account/tokens" className="text-blue-600">
+                  here
+                </Link>
+                . You can also create an issue on
+                <Link
+                  href="https://github.com/IKatsuba/railway-template-kickback/issues"
+                  className="text-blue-600"
+                >
+                  GitHub
+                </Link>
+                .
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background p-8">
@@ -59,7 +104,7 @@ export default async function Home() {
 
         <div className="grid gap-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {data.userTemplates.map((template) => (
+            {data.templates.map((template) => (
               <TemplateCard
                 key={template.id}
                 title={template.name}
@@ -71,7 +116,7 @@ export default async function Home() {
                   `https://devicons.railway.app/${encodeURIComponent(template.name)}?variant=light`
                 }
                 code={template.code}
-                referralCode={data.referralCode}
+                referralCode={template.referralCode}
                 activeProjects={template.activeProjects}
               />
             ))}
