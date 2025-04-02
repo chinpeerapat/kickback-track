@@ -2,6 +2,7 @@ import './global.css';
 
 import { cn } from '@nxnext/utils';
 import { Inter as FontSans } from 'next/font/google';
+import Script from 'next/script';
 
 import { env } from './_env';
 
@@ -26,6 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ></script>
         )}
       </body>
+
+      {env.NODE_ENV === 'development' && env.ONEDOLLARSTATS_ENABLED && (
+        <Script src="https://assets.onedollarstats.com/stonks.js" />
+      )}
     </html>
   );
 }

@@ -8,6 +8,10 @@ const envSchema = z.object({
   RAILWAY_PUBLIC_DOMAIN: z.string().optional(),
   CLOUDFLARE_ANALYTICS_TOKEN: z.string().optional(),
   NODE_ENV: z.string().optional(),
+  ONEDOLLARSTATS_ENABLED: z
+    .string()
+    .default('false')
+    .transform((val) => val === 'true'),
 });
 
 export const env = envSchema.parse(process.env);
