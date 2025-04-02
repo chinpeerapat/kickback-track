@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </body>
 
-      {env.NODE_ENV === 'development' && env.ONEDOLLARSTATS_ENABLED && (
+      {env.NODE_ENV === 'production' && env.ONEDOLLARSTATS_ENABLED && (
         <Script src="https://assets.onedollarstats.com/stonks.js" />
       )}
     </html>
