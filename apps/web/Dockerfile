@@ -15,7 +15,6 @@ RUN npx nx build web -c=production
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -26,6 +25,7 @@ COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 
+ENV NODE_ENV production
 
 EXPOSE 3000
 
