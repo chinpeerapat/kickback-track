@@ -26,10 +26,13 @@ COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 
 ENV NODE_ENV production
+ENV PORT 3000
+# Make RAILWAY_TOKEN and CLOUDFLARE_ANALYTICS_TOKEN available at runtime
+# Do NOT set the value here for secrets! Pass them with `docker run -e RAILWAY_TOKEN=... -e CLOUDFLARE_ANALYTICS_TOKEN=...`
+ENV RAILWAY_TOKEN=
+ENV CLOUDFLARE_ANALYTICS_TOKEN=
 
 EXPOSE 3000
-
-ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
